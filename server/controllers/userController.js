@@ -38,7 +38,24 @@ const registerUser = async (req, res, next) => {
 
 const loginUser = async (req, res, next) => {
     try {
-        res.json("Login User")
+        const { email, password } = req.body
+
+        if (!email || !password) {
+            return next(new HttpError("Fill in all fields", 422))
+        }
+
+        const user = await UserModel.findOne({ email })
+
+        if (!user) {
+            return next(new HttpError("user name is wrong", 422))
+        }
+
+        //check password
+        if (!(await bcrypt.compare(password, user?.password))) {
+            return next(new HttpError("password is wrong", 422))
+        }
+
+        res.json(user).status(201)
     } catch (error) {
         return next(new HttpError(error))
     }
