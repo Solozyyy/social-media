@@ -1,8 +1,36 @@
 const HttpError = require("../models/errorModel")
+const UserModel = require("../models/userModel")
+const bcrypt = require("bcryptjs")
 
 const registerUser = async (req, res, next) => {
     try {
-        res.json("Register User")
+        const { fullName, email, password, confirmPassword } = req.body
+
+        if (!fullName || !email || !password || !confirmPassword) {
+            return next(new HttpError("Fill in all blanks", 422))
+        }
+
+        const emailExisted = await UserModel.findOne({ email })
+        if (emailExisted) {
+            return next(new HttpError("Email is already existed", 422))
+        }
+
+        if (password !== confirmPassword) {
+            return next(new HttpError("Password do not match", 422))
+        }
+
+        if (password.length < 6) {
+            return next(new HttpError("Password should be at least has 6 characters", 422))
+        }
+
+        //hash password
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password, salt)
+
+        const newUser = await UserModel.create({ fullName, email, password: hashedPassword })
+
+        res.json(newUser).status(201)
+
     } catch (error) {
         return next(new HttpError(error))
     }

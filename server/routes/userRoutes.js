@@ -13,11 +13,11 @@ const router = require("express").Router()
 router.post("/register", registerUser)
 router.post("/login", loginUser)
 
+//get users
+router.get("/", getUsers)
+
 //get user
 router.get("/:id", getUser)
-
-//get users
-router.get("/users", getUsers)
 
 //follow/unfollow
 router.get("/:id/follow-unfollow", followUnfollowUser)

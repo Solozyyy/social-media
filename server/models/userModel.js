@@ -16,25 +16,25 @@ const userSchema = new mongoose.Schema({
     },
     followers: [
         {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         }
     ],
     following: [
         {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "User"
         }
     ],
     bookmarks: [
         {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "Post"
         }
     ],
     posts: [
         {
-            type: Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: "Post"
         }
     ],
