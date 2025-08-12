@@ -1,6 +1,8 @@
 const HttpError = require("../models/errorModel")
 const UserModel = require("../models/userModel")
 const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+require("dotenv").config()
 
 const registerUser = async (req, res, next) => {
     try {
@@ -55,7 +57,9 @@ const loginUser = async (req, res, next) => {
             return next(new HttpError("password is wrong", 422))
         }
 
-        res.json(user).status(201)
+        const token = await jwt.sign({ id: user?._id }, process.env.JWT_SECRET, { expiresIn: "2h" })
+
+        res.json({ token, id: user?._id }).status(201)
     } catch (error) {
         return next(new HttpError(error))
     }
@@ -64,7 +68,13 @@ const loginUser = async (req, res, next) => {
 const getUser = async (req, res, next) => {
     try {
         const { id } = req.params
-        res.json("Get User")
+        const user = await UserModel.findById(id)
+
+        if (!user) {
+            return next(new HttpError("User doesn't exist", 422))
+        }
+
+        res.json(user).status(201)
     } catch (error) {
         return next(new HttpError(error))
     }
@@ -72,7 +82,8 @@ const getUser = async (req, res, next) => {
 
 const getUsers = async (req, res, next) => {
     try {
-        res.json("Get Users")
+        const userList = await UserModel.find()
+        res.json(userList).status(201)
     } catch (error) {
         return next(new HttpError(error))
     }
@@ -80,7 +91,12 @@ const getUsers = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
     try {
-        res.json("Update User")
+        const { fullName, bio } = req.body
+
+        const editCurrentUser = await UserModel.findByIdAndUpdate(req.user.id, { fullName, bio }, { new: true })
+
+        res.json(editCurrentUser).status(201)
+
     } catch (error) {
         return next(new HttpError(error))
     }
