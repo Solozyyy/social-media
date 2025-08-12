@@ -3,6 +3,10 @@ const UserModel = require("../models/userModel")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
+const uuid = require("uuid").v4
+const fs = require("fs")
+const path = require("path")
+const cloudinary = require("../utils/cloudinary")
 
 const registerUser = async (req, res, next) => {
     try {
@@ -59,7 +63,7 @@ const loginUser = async (req, res, next) => {
 
         const token = await jwt.sign({ id: user?._id }, process.env.JWT_SECRET, { expiresIn: "2h" })
 
-        res.json({ token, id: user?._id }).status(201)
+        res.json({ token, id: user?._id, user }).status(201)
     } catch (error) {
         return next(new HttpError(error))
     }
@@ -104,8 +108,28 @@ const updateUser = async (req, res, next) => {
 
 const followUnfollowUser = async (req, res, next) => {
     try {
-        const { id } = req.params
-        res.json("Follow/Unfollow User")
+
+        const userToFollowId = req.params.id
+
+        if (req.user.id === userToFollowId) {
+            return next(new HttpError("Can't follow yourself", 422))
+        }
+
+        const currentUser = await UserModel.findById(req.user.id)
+
+        //check if follow or not
+        const isFollowing = currentUser?.following?.includes(userToFollowId)
+
+        if (!isFollowing) {
+            const updatedUser = await UserModel.findByIdAndUpdate(userToFollowId, { $push: { followers: req.user.id } }, { new: true })
+            await UserModel.findByIdAndUpdate(req.user.id, { $push: { following: userToFollowId } }, { new: true })
+            res.json(updatedUser).status(201)
+        } else {
+            const updatedUser = await UserModel.findByIdAndUpdate(userToFollowId, { $pull: { followers: req.user.id } }, { new: true })
+            await UserModel.findByIdAndUpdate(req.user.id, { $pull: { following: userToFollowId } }, { new: true })
+            res.json(updatedUser).status(201)
+        }
+
     } catch (error) {
         return next(new HttpError(error))
     }
@@ -113,8 +137,37 @@ const followUnfollowUser = async (req, res, next) => {
 
 const changeUserAvatar = async (req, res, next) => {
     try {
-        const { id } = req.params
-        res.json("Get User")
+        // res.json(req.files.avatar)
+
+        if (!req.files.avatar) {
+            return next(new HttpError("Please choose a file", 422))
+        }
+
+        const { avatar } = req.files
+        if (avatar.size > 500000) {
+            return next(new HttpError("Picture has size too big. Should be less than 500kB", 422))
+        }
+
+        let fileName = avatar.name
+        let splittedFileName = fileName.split(".")
+        let newFileName = splittedFileName[0] + uuid() + "." + splittedFileName[splittedFileName.length - 1]
+
+        // res.json(newFileName)
+        avatar.mv(path.join(__dirname, "..", "uploads", newFileName), async (err) => {
+            if (err) {
+                return next(new HttpError(err))
+            }
+
+            //store on cloud
+            const result = await cloudinary.uploader.upload(path.join(__dirname, "..", "uploads", newFileName)
+                , { resource_type: "image" })
+            if (!result.secure_url) {
+                return next(new HttpError("Couldn't upload image to cloudinary", 422))
+            }
+            const updatedUser = await UserModel.findByIdAndUpdate(req.user.id, { profilePhoto: result?.secure_url }, { new: true })
+            res.json(updatedUser).status(200)
+        })
+
     } catch (error) {
         return next(new HttpError(error))
     }
