@@ -6,6 +6,7 @@ const { connect } = require("mongoose")
 const dbConnect = require("./db/dbConnect")
 const { notFound, errorHandler } = require("./middleware/errorMiddleware")
 const userRoutes = require("./routes/userRoutes")
+const postRoutes = require("./routes/postRoutes")
 
 const app = express()
 
@@ -17,6 +18,7 @@ app.use(cors({ credentials: true, origin: ["http://localhost:5173"] }))
 app.use(upload())
 
 app.use("/api/users", userRoutes)
+app.use("/api/posts", postRoutes)
 app.use(notFound)
 app.use(errorHandler)
 
