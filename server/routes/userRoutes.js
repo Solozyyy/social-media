@@ -23,7 +23,7 @@ router.post("/avatar", authMiddleware, changeUserAvatar)
 //get 
 router.get("/bookmarks", authMiddleware, getUserBookmark)
 router.get("/:id", authMiddleware, getUser)
-router.get("/", authMiddleware, getUsers)
+router.get("/", getUsers)
 router.get("/:id/follow-unfollow", authMiddleware, followUnfollowUser)
 router.get("/:id/posts", authMiddleware, getUserPost)
 
