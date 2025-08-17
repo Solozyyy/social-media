@@ -35,13 +35,13 @@ const createPost = async (req, res, next) => {
                     return next(new HttpError("couldn't upload to cloudinary"))
                 }
                 const newPost = await PostModel.create({ creator: req.user.id, body, image: result.secure_url })
-                await UserModel.findByIdAndUpdate(newPost?.creator, { $push: newPost?._id })
+                await UserModel.findByIdAndUpdate(newPost?.creator, { $push: { posts: newPost?._id } })
                 res.json(newPost)
             })
         }
 
     } catch (error) {
-        return next(new HttpError("Error occured"))
+        return next(new HttpError(error || "Error occured"))
     }
 }
 
@@ -72,9 +72,20 @@ const getPosts = async (req, res, next) => {
 
 const deletePost = async (req, res, next) => {
     try {
-        res.json("delete post")
+        const postId = req.params.id
+
+        const currentPost = await PostModel.findById(postId)
+        //res.json(currentPost?.creator)
+        //res.json(req.user.id.toString())
+        if (currentPost?.creator.toString() !== req.user.id.toString()) {
+            return next(new HttpError("You cannot delete this post cuz you are not the creator", 433))
+        }
+        const deletedPost = await PostModel.findByIdAndDelete(postId)
+        await UserModel.findByIdAndUpdate(currentPost?.creator, { $pull: { posts: currentPost?._id } })
+
+        res.json(deletedPost)
     } catch (error) {
-        return next(new HttpError("Error occured"))
+        return next(new HttpError(error || "Error occured"))
     }
 }
 
@@ -100,7 +111,9 @@ const updatePost = async (req, res, next) => {
 
 const getFollowingPosts = async (req, res, next) => {
     try {
-        res.json("get following post")
+        const user = await UserModel.findById(req.user.id)
+        const posts = await PostModel.find({ creator: { $in: user?.following } })
+        res.json(posts)
     } catch (error) {
         return next(new HttpError("Error occured"))
     }
@@ -108,15 +121,27 @@ const getFollowingPosts = async (req, res, next) => {
 
 const likeOrDislikePost = async (req, res, next) => {
     try {
-        res.json("Like/dislike post")
+        const postId = req.params.id
+        let updatedPost
+        const post = await PostModel.findById(postId)
+        if (post?.likes.includes(req.user.id)) {
+            updatedPost = await PostModel.findByIdAndUpdate(postId, { $pull: { likes: req.user.id } }, { new: true })
+        }
+        else {
+            updatedPost = await PostModel.findByIdAndUpdate(postId, { $push: { likes: req.user.id } }, { new: true })
+        }
+        res.json(updatedPost)
+
     } catch (error) {
-        return next(new HttpError("Error occured"))
+        return next(new HttpError(error || "Error occured"))
     }
 }
 
 const getUserPost = async (req, res, next) => {
     try {
-        res.json("Get user post")
+        const userId = req.params.id
+        const posts = await UserModel.findById(userId).populate({ path: "posts", options: { sort: { createdAt: -1 } } })
+        res.json(posts)
     } catch (error) {
         return next(new HttpError("Error occured"))
     }
@@ -124,7 +149,19 @@ const getUserPost = async (req, res, next) => {
 
 const createBookmark = async (req, res, next) => {
     try {
-        res.json("Create bookmark")
+        const user = await UserModel.findById(req.user.id)
+
+        const postId = req.params.id
+
+        let updatedUser
+
+        if (user?.bookmarks.includes(postId)) {
+            updatedUser = await UserModel.findByIdAndUpdate(req.user.id, { $pull: { bookmarks: postId } }, { new: true })
+        }
+        else {
+            updatedUser = await UserModel.findByIdAndUpdate(req.user.id, { $push: { bookmarks: postId } }, { new: true })
+        }
+        res.json(updatedUser)
     } catch (error) {
         return next(new HttpError("Error occured"))
     }
@@ -132,7 +169,8 @@ const createBookmark = async (req, res, next) => {
 
 const getUserBookmark = async (req, res, next) => {
     try {
-        res.json("Get user bookmark")
+        const userBookmarks = await UserModel.findById(req.user.id).populate({ path: "bookmarks", options: { sort: { createdAt: -1 } } })
+        res.json(userBookmarks)
     } catch (error) {
         return next(new HttpError("Error occured"))
     }
