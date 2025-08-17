@@ -85,9 +85,9 @@ const updatePost = async (req, res, next) => {
         const { body } = req.body
 
         const post = await PostModel.findById(postId)
-        res.json(post?.creator)
+        //res.json(post?.creator)
         //res.json(req.user.id)
-        if (post?.creator !== req.user.id) {
+        if (post?.creator.toString() !== req.user.id.toString()) {
             return next(new HttpError("You can't update this post since you are not the creator", 403))
         }
         const updatedPost = await PostModel.findByIdAndUpdate(postId, { body }, { new: true })
