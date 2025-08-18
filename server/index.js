@@ -7,6 +7,7 @@ const dbConnect = require("./db/dbConnect")
 const { notFound, errorHandler } = require("./middleware/errorMiddleware")
 const userRoutes = require("./routes/userRoutes")
 const postRoutes = require("./routes/postRoutes")
+const commentRoutes = require("./routes/commentRoutes")
 
 const app = express()
 
@@ -19,6 +20,7 @@ app.use(upload())
 
 app.use("/api/users", userRoutes)
 app.use("/api/posts", postRoutes)
+app.use("/api/comments", commentRoutes)
 app.use(notFound)
 app.use(errorHandler)
 

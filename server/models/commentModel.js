@@ -17,4 +17,4 @@ const commentSchema = new Schema({
     comment: { type: String, required: true }
 })
 
-module.exports = commentSchema
+module.exports = model("Comment", commentSchema)
