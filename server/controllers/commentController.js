@@ -29,7 +29,9 @@ const createComment = async (req, res, next) => {
 
 const getPostComments = async (req, res, next) => {
     try {
-        res.json("get post cmt")
+        const { postId } = req.params
+        const comments = await PostModel.findById(postId).populate({ path: "comments", options: { sort: { createdAt: -1 } } })
+        res.json(comments)
     } catch (error) {
         return next(new HttpError(error || "error occured"))
     }
@@ -37,7 +39,11 @@ const getPostComments = async (req, res, next) => {
 
 const deleteComment = async (req, res, next) => {
     try {
-        res.json("delete cmt")
+        const { commentId } = req.params
+
+        const deletedComment = await CommentModel.findByIdAndDelete(commentId)
+
+        res.json(deletedComment)
     } catch (error) {
         return next(new HttpError(error || "error occured"))
     }
