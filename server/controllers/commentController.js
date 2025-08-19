@@ -40,7 +40,17 @@ const getPostComments = async (req, res, next) => {
 const deleteComment = async (req, res, next) => {
     try {
         const { commentId } = req.params
+        //res.json(commentId)
+        const comment = await CommentModel.findById(commentId)
+        //res.json(comment)
+        const commentCreator = await UserModel.findById(comment?.creator?.creatorId)
+        //res.json(req.user.id)
+        //res.json(comment?.creator?.creatorId)
+        if (commentCreator?._id.toString() !== req.user.id.toString()) {
+            return next(new HttpError("You cannot delete this comment cuz you're not the creator of it", 433))
+        }
 
+        await PostModel.findByIdAndUpdate(comment?.postId, { $pull: { comments: commentId } })
         const deletedComment = await CommentModel.findByIdAndDelete(commentId)
 
         res.json(deletedComment)
