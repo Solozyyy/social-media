@@ -9,8 +9,7 @@ const userRoutes = require("./routes/userRoutes")
 const postRoutes = require("./routes/postRoutes")
 const commentRoutes = require("./routes/commentRoutes")
 const messageRoutes = require("./routes/messageRoutes")
-
-const app = express()
+const { server, app } = require("./socket/socket")
 
 dbConnect()
 
@@ -27,6 +26,6 @@ app.use(notFound)
 app.use(errorHandler)
 
 
-app.listen(process.env.PORT, () => console.log(`Server run on port: ${process.env.PORT}`))
+server.listen(process.env.PORT, () => console.log(`Server run on port: ${process.env.PORT}`))
 
 

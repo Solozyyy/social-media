@@ -19,6 +19,8 @@
     "express-fileupload": "^1.5.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.2",
+    "socket": "^1.0.92",
+    "socket.io": "^4.8.1",
     "uuid": "^11.1.0"
   }
 }
