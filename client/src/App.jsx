@@ -1,23 +1,36 @@
-import { useState } from 'react'
+import React from 'react'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import RootLayout from './RootLayout'
+import ErrorPage from './pages/ErrorPage'
+import Home from './pages/Home'
+import MessagesList from './components/MessagesList'
+import Messages from './pages/Messages'
+import Bookmarks from './pages/Bookmarks'
+import Profile from './pages/Profile'
+import SinglePost from './pages/SinglePost'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import LogOut from './pages/LogOut'
 
-function App() {
-  const [count, setCount] = useState(0)
+const router = createBrowserRouter([
+  {
+    path: "/", element: <RootLayout />, errorElement: <ErrorPage />, children: [
+      { index: true, element: <Home /> },
+      { path: "messages", element: <MessagesList /> },
+      { path: "messages/:receiverId", element: <Messages /> },
+      { path: "bookmarks", element: <Bookmarks /> },
+      { path: "users/:id", element: <Profile /> },
+      { path: "posts/:id", element: <SinglePost /> }
+    ]
+  },
+  { path: "/login", element: <Login /> },
+  { path: "/register", element: <Register /> },
+  { path: "/logout", element: <LogOut /> }
+])
 
+const App = () => {
   return (
-    <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <RouterProvider router={router} />
   )
 }
 
