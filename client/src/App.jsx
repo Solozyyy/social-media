@@ -27,7 +27,7 @@ const router = createBrowserRouter([
   { path: "/register", element: <Register /> },
   { path: "/logout", element: <LogOut /> }
 ])
-
+//streak
 const App = () => {
   return (
     <RouterProvider router={router} />
