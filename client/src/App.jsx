@@ -11,6 +11,8 @@ import SinglePost from './pages/SinglePost'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import LogOut from './pages/LogOut'
+import { Provider } from 'react-redux'
+import store from './store/store'
 
 const router = createBrowserRouter([
   {
@@ -28,9 +30,12 @@ const router = createBrowserRouter([
   { path: "/logout", element: <LogOut /> }
 ])
 //streak
+
 const App = () => {
   return (
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   )
 }
 
