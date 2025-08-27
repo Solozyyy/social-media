@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import { registerService } from '../services'
 
 const Register = () => {
 
@@ -25,7 +26,13 @@ const Register = () => {
     const registerUser = async (e) => {
         e.preventDefault()
         try {
-
+            const res = await registerService(userData)
+            console.log(res);
+            if (res?.success) {
+                navigate('/login')
+            } else {
+                setError("Đăng ký không thành công!")
+            }
         } catch (error) {
             setError(error.response.data.message)
         }

@@ -35,7 +35,7 @@ const registerUser = async (req, res, next) => {
 
         const newUser = await UserModel.create({ fullName, email, password: hashedPassword })
 
-        res.json(newUser).status(201)
+        res.json({ success: true, user: newUser }).status(201)
 
     } catch (error) {
         return next(new HttpError(error))

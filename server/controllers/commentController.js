@@ -20,7 +20,7 @@ const createComment = async (req, res, next) => {
             , postId
         })
         await PostModel.findByIdAndUpdate(postId, { $push: { comments: newComment?._id } }, { new: true })
-        res.json(newComment).status(200)
+        res.json({ success: true, comment: newComment }).status(200)
 
     } catch (error) {
         return next(new HttpError(error || "error occured"))
@@ -53,7 +53,7 @@ const deleteComment = async (req, res, next) => {
         await PostModel.findByIdAndUpdate(comment?.postId, { $pull: { comments: commentId } })
         const deletedComment = await CommentModel.findByIdAndDelete(commentId)
 
-        res.json(deletedComment)
+        res.json({ success: true, deletedComment })
     } catch (error) {
         return next(new HttpError(error || "error occured"))
     }
