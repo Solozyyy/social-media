@@ -55,7 +55,7 @@ const loginUser = async (req, res, next) => {
         if (!user) {
             return next(new HttpError("user name is wrong", 422))
         }
-
+        const { uPassword, ...userInfo } = user.toObject()
         //check password
         if (!(await bcrypt.compare(password, user?.password))) {
             return next(new HttpError("password is wrong", 422))
@@ -63,7 +63,14 @@ const loginUser = async (req, res, next) => {
 
         const token = await jwt.sign({ id: user?._id }, process.env.JWT_SECRET, { expiresIn: "2h" })
 
-        res.json({ success: true, data: { token, id: user?._id, user } }).status(201)
+        res.status(201).json({
+            success: true,
+            data: {
+                token,
+                id: user._id,
+                ...userInfo
+            }
+        })
     } catch (error) {
         return next(new HttpError(error))
     }
