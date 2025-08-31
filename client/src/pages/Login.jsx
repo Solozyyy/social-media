@@ -13,7 +13,6 @@ const Login = () => {
     })
 
     const [error, setError] = useState("")
-
     const [showPassword, setShowPassword] = useState(false)
 
     const navigate = useNavigate()
@@ -33,10 +32,11 @@ const Login = () => {
                 localStorage.setItem("currentUser", JSON.stringify(res?.data))
                 navigate('/')
             } else {
-                setError("Đăng ký không thành công!")
+                setError("Login failed!")
             }
         } catch (error) {
             setError(error.response.data.message)
+
         }
     }
 
@@ -46,7 +46,6 @@ const Login = () => {
                 <h2>Login</h2>
                 <form onSubmit={loginUser}>
                     {error && <p className="form__error-message">{error}</p>}
-
                     <input type='text' name='email' placeholder='Email' onChange={changeInputHandler} autoFocus />
 
                     <div className="password__controller">
