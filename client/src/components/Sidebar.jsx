@@ -25,6 +25,7 @@ const Sidebar = () => {
                 <p>Themes</p>
             </a>
         </menu>
+        // streak :>
     )
 }
 
