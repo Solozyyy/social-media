@@ -15,6 +15,7 @@ const RootLayout = () => {
         const body = document.body
         body.className = `${primaryColor} ${backgroundColor}`
     }, [primaryColor, backgroundColor])
+
     return (
         <>
             <Navbar />
