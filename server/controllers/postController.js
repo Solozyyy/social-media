@@ -36,7 +36,7 @@ const createPost = async (req, res, next) => {
                 }
                 const newPost = await PostModel.create({ creator: req.user.id, body, image: result.secure_url })
                 await UserModel.findByIdAndUpdate(newPost?.creator, { $push: { posts: newPost?._id } })
-                res.json(newPost)
+                res.json(newPost).status(201)
             })
         }
 
