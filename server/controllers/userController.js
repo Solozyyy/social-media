@@ -85,7 +85,7 @@ const getUser = async (req, res, next) => {
             return next(new HttpError("User doesn't exist", 422))
         }
 
-        res.json(user).status(201)
+        res.json({ data: user }).status(201)
     } catch (error) {
         return next(new HttpError(error))
     }

@@ -46,3 +46,26 @@ export async function getAllPostsService() {
         throw error;
     }
 }
+
+export async function getPostByIdService(id) {
+    try {
+        const { data } = await axiosInstance.get(`/api/posts/${id}`);
+        return data;
+    } catch (error) {
+        // Hiển thị lỗi chi tiết từ server (nếu có)
+        console.error("getPostById error:", error.response?.data || error.message);
+        throw error;
+    }
+}
+
+
+export async function getUserById(id) {
+    try {
+        const { data } = await axiosInstance.get(`/api/users/${id}`);
+        return data;
+    } catch (error) {
+        // Hiển thị lỗi chi tiết từ server (nếu có)
+        console.error("getUserById error:", error.response?.data || error.message);
+        throw error;
+    }
+}

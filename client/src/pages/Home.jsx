@@ -41,7 +41,7 @@ const Home = () => {
     return (
         <section className="mainArea">
             <CreatePost onCreatePost={createPost} error={error} />
-            <Feeds />
+            <Feeds posts={posts} onSetPost={setPosts} />
         </section>
     )
 }
