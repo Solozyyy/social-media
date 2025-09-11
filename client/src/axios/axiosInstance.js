@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:5000',
@@ -9,8 +8,16 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
 
     (config) => {
-        const currentUser = localStorage.getItem("currentUser") || null;
-        const token = currentUser ? JSON.parse(currentUser).token : null;
+        const raw = localStorage.getItem('currentUser');
+        let token = null;
+        if (raw) {
+            try {
+                token = JSON.parse(raw)?.token ?? null;
+            } catch {
+                // nếu hỏng JSON -> xoá để tránh lỗi lặp
+                localStorage.removeItem('currentUser');
+            }
+        }
         console.log("🧪 Token gửi đi:", token);
 
         if (token) {

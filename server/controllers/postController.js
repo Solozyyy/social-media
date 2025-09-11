@@ -64,7 +64,7 @@ const getPost = async (req, res, next) => {
 const getPosts = async (req, res, next) => {
     try {
         const posts = await PostModel.find().sort({ createdAt: -1 })
-        res.json(posts)
+        res.json({ data: posts }).status(200)
     } catch (error) {
         return next(new HttpError("Error occured"))
     }
