@@ -130,7 +130,7 @@ const likeOrDislikePost = async (req, res, next) => {
         else {
             updatedPost = await PostModel.findByIdAndUpdate(postId, { $push: { likes: req.user.id } }, { new: true })
         }
-        res.json(updatedPost)
+        res.json({ data: updatedPost })
 
     } catch (error) {
         return next(new HttpError(error || "Error occured"))

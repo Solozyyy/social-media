@@ -69,3 +69,14 @@ export async function getUserById(id) {
         throw error;
     }
 }
+
+export async function LikeDislikePostService(id) {
+    try {
+        const { data } = await axiosInstance.get(`/api/posts/like-dislike/${id}`);
+        return data;
+    } catch (error) {
+        // Hiển thị lỗi chi tiết từ server (nếu có)
+        console.error("LikeDislikePostService error:", error.response?.data || error.message);
+        throw error;
+    }
+}

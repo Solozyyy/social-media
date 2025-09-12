@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import LikeDislikePost from './LikeDislikePost'
 import { FaRegCommentDots } from 'react-icons/fa'
 import { IoMdShare } from 'react-icons/io'
-import TrimText from './TrimText'
+import TrimText from "../helpers/TrimText"
 
 const Feed = ({ post }) => {
     const userId = useSelector(state => state?.user?.currentUser?.id)
