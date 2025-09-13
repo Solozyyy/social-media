@@ -14,13 +14,13 @@ const authMiddleware = require("../middleware/authMiddleware")
 
 //post
 router.post("/create", authMiddleware, createPost)
-router.post("/:id/bookmark", authMiddleware, createBookmark)
 
 //get
 router.get("/following-posts", authMiddleware, getFollowingPosts)
 router.get("/:id", authMiddleware, getPost)
 router.get("/", authMiddleware, getPosts)
 router.get("/like-dislike/:id", authMiddleware, likeOrDislikePost)
+router.get("/:id/bookmark", authMiddleware, createBookmark)
 
 //patch
 router.patch("/update/:id", authMiddleware, updatePost)

@@ -161,7 +161,7 @@ const createBookmark = async (req, res, next) => {
         else {
             updatedUser = await UserModel.findByIdAndUpdate(req.user.id, { $push: { bookmarks: postId } }, { new: true })
         }
-        res.json(updatedUser)
+        res.json({ data: updatedUser })
     } catch (error) {
         return next(new HttpError("Error occured"))
     }

@@ -80,3 +80,14 @@ export async function LikeDislikePostService(id) {
         throw error;
     }
 }
+
+export async function createBookmarkService(postId) {
+    try {
+        const { data } = await axiosInstance.get(`/api/posts/${postId}/bookmark`);
+        return data;
+    } catch (error) {
+        // Hiển thị lỗi chi tiết từ server (nếu có)
+        console.error("createBookmarkService error:", error.response?.data || error.message);
+        throw error;
+    }
+}

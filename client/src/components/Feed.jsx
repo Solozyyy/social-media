@@ -9,6 +9,7 @@ import LikeDislikePost from './LikeDislikePost'
 import { FaRegCommentDots } from 'react-icons/fa'
 import { IoMdShare } from 'react-icons/io'
 import TrimText from "../helpers/TrimText"
+import BookmarkPost from './BookmarkPost'
 
 const Feed = ({ post }) => {
     const userId = useSelector(state => state?.user?.currentUser?.id)
@@ -66,6 +67,7 @@ const Feed = ({ post }) => {
                         <IoMdShare />
                     </button>
                 </div>
+                <BookmarkPost post={post} />
             </footer>
         </artical>
     )
