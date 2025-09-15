@@ -7,7 +7,7 @@ import { FaRegBookmark } from 'react-icons/fa'
 
 const BookmarkPost = ({ post }) => {
     const [user, setUser] = useState({})
-    const [postBookmarked, setPostBookmarked] = useState(user?.bookmarks?.includes(post?._id))
+    const [postBookmarked, setPostBookmarked] = useState(false)
     const userId = useSelector(state => state?.user?.currentUser?.id)
 
     const getUser = async () => {
@@ -36,8 +36,12 @@ const BookmarkPost = ({ post }) => {
     }
 
     useEffect(() => {
-        getUser()
-    }, [user, postBookmarked])
+        if (userId) getUser()
+    }, [userId])
+
+    useEffect(() => {
+        setPostBookmarked(Boolean(user?.bookmarks?.includes(post?._id)))
+    }, [user?.bookmarks, post?._id])
 
     return (
         <button className="feed__footer-bookmark" onClick={createBookmark}>
