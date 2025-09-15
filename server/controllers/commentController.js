@@ -20,7 +20,7 @@ const createComment = async (req, res, next) => {
             , postId
         })
         await PostModel.findByIdAndUpdate(postId, { $push: { comments: newComment?._id } }, { new: true })
-        res.json({ success: true, comment: newComment }).status(200)
+        res.json({ data: newComment }).status(200)
 
     } catch (error) {
         return next(new HttpError(error || "error occured"))

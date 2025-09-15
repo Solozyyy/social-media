@@ -1,6 +1,7 @@
 import React from 'react'
 import { FaRegTrashAlt } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
+import TimeAgo from 'react-timeago'
 
 const PostComment = ({ comment, onDeleteComment }) => {
 
@@ -24,7 +25,7 @@ const PostComment = ({ comment, onDeleteComment }) => {
                     <p>{comment?.comment}</p>
                 </div>
             </div>
-            {userId == comment?.creator?.creatorId &&
+            {userId === comment?.creator?.creatorId &&
                 <button className="singlePost__comment-delete-btn" onClick={deleteComment}>
                     <FaRegTrashAlt /></button>}
         </li>

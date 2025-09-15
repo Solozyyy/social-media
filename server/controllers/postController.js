@@ -54,7 +54,7 @@ const getPost = async (req, res, next) => {
             return next(new HttpError("post doesn't exist", 404))
         }
 
-        res.json(post).status(200)
+        res.json({ data: post }).status(200)
 
     } catch (error) {
         return next(new HttpError(error.message || "Error occured"))
