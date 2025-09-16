@@ -73,7 +73,9 @@ const SinglePost = () => {
                     {post?.likes && <LikeDislikePost post={post} />}
                     <button className="feed__footer-comments">
                         <FaRegCommentDots />
+                        <small>{post?.comments?.length}</small>
                     </button>
+
                     <button className="feed__footer-share">
                         <IoMdShare />
                     </button>

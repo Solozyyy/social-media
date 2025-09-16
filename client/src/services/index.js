@@ -94,7 +94,7 @@ export async function createBookmarkService(postId) {
 
 export async function createCommentService(postId, comment) {
     try {
-        const { data } = axiosInstance.post(`/api/comments/${postId}`, { comment })
+        const { data } = await axiosInstance.post(`/api/comments/${postId}`, { comment })
         return data
     } catch (error) {
         console.error("createComment error:", error.response?.data || error.message);
@@ -104,10 +104,20 @@ export async function createCommentService(postId, comment) {
 
 export async function deleteCommentService(commentId) {
     try {
-        const { data } = axiosInstance.delete(`/api/comments/${commentId}`)
+        const { data } = await axiosInstance.delete(`/api/comments/${commentId}`)
         return data
     } catch (error) {
         console.error("createComment error:", error.response?.data || error.message);
+        throw error;
+    }
+}
+
+export async function getBookmarksService() {
+    try {
+        const { data } = await axiosInstance.get(`/api/users/bookmarks`)
+        return data
+    } catch (error) {
+        console.error("getBookmarksService error:", error.response?.data || error.message);
         throw error;
     }
 }

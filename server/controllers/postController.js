@@ -170,7 +170,7 @@ const createBookmark = async (req, res, next) => {
 const getUserBookmark = async (req, res, next) => {
     try {
         const userBookmarks = await UserModel.findById(req.user.id).populate({ path: "bookmarks", options: { sort: { createdAt: -1 } } })
-        res.json(userBookmarks)
+        res.json({ data: userBookmarks })
     } catch (error) {
         return next(new HttpError("Error occured"))
     }
