@@ -16,8 +16,9 @@ const Home = () => {
         try {
             const response = await createPostService(data)
             console.log("Post created successfully:", response)
-            const newPost = response?.data
-            setPosts([newPost, ...posts])
+            // const newPost = response?.data
+            // setPosts([newPost, ...posts])
+            await getPosts()
         } catch (error) {
             setError(error?.response?.data?.message || error.message)
         }

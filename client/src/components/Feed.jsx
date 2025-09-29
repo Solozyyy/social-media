@@ -29,12 +29,12 @@ const Feed = ({ post }) => {
 
     useEffect(() => {
         getPostCreator()
-    }, [])
+    }, [post])
 
     return (
         <artical className="feed">
             <header className="feed__header">
-                <Link to={`/users/${post.creator}`} className="feed__header-profile" >
+                <Link to={`/users/${post?.creator}`} className="feed__header-profile" >
                     <ProfileImage image={creator?.profilePhoto} />
                     <div className="feed__header-details">
                         <h4>{creator?.fullName}</h4>
@@ -48,7 +48,7 @@ const Feed = ({ post }) => {
                     </menu>
                 }
             </header>
-            <Link to={`posts/${post?._id}`} className='feed__body'>
+            <Link to={`/posts/${post?._id}`} className='feed__body'>
                 <p><TrimText item={post?.body} maxLength={160} /></p>
                 <div className="feed__images">
                     <img src={post?.image} alt="" />
@@ -58,7 +58,7 @@ const Feed = ({ post }) => {
                 <div>
                     <LikeDislikePost post={post} />
                     <button className="feed___footer-comments">
-                        <Link to={`posts/${post?._id}`}>
+                        <Link to={`/posts/${post?._id}`}>
                             <FaRegCommentDots />
                         </Link>
                         <small>{post?.comments?.length}</small>

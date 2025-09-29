@@ -94,6 +94,7 @@ export async function createBookmarkService(postId) {
 
 export async function createCommentService(postId, comment) {
     try {
+        //const data = await axiosInstance.post(`/api/comments/${postId}`, { comment })
         const { data } = await axiosInstance.post(`/api/comments/${postId}`, { comment })
         return data
     } catch (error) {
