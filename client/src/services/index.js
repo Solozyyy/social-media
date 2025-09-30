@@ -122,3 +122,13 @@ export async function getBookmarksService() {
         throw error;
     }
 }
+
+export async function changeAvatarService(formData) {
+    try {
+        const { data } = await axiosInstance.post('/api/users/avatar', formData)
+        return data
+    } catch (error) {
+        console.error("changeAvatarService error:", error.response?.data || error.message);
+        throw error;
+    }
+}

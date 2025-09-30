@@ -1,15 +1,19 @@
 import React from 'react'
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { getUserById } from '../services'
+import { Link, useParams } from 'react-router-dom'
+import { changeAvatarService, getUserById } from '../services'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { LuUpload } from 'react-icons/lu'
 import { FaCheck } from 'react-icons/fa'
+import { useDispatch } from 'react-redux'
+import { userActions } from '../store/user-slice'
+import { useNavigate } from 'react-router-dom'
 
 const UserProfile = () => {
 
     const loggedInUserId = useSelector(state => state?.user?.currentUser?.id)
+    const currentUser = useSelector(state => state?.user?.currentUser)
 
     const [user, setUser] = useState({})
     const { id: userId } = useParams()
@@ -17,6 +21,8 @@ const UserProfile = () => {
     const [avatar, setAvatar] = useState(user?.profilePhoto)
     const [avatarTouch, setAvatarTouch] = useState(false)
 
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     //console.log(userId, "userId");
 
     const getUser = async () => {
@@ -31,8 +37,19 @@ const UserProfile = () => {
         }
     }
 
-    const changeAvatarHandle = async () => {
+    const changeAvatarHandle = async (e) => {
+        e.preventDefault()
+        setAvatarTouch(true)
+        try {
+            const postData = new FormData()
+            postData.set("avatar", avatar)
+            const res = await changeAvatarService(postData)
+            dispatch(userActions?.changeCurrentUser({ ...currentUser, profilePhoto: res?.data?.profilePhoto }))
+            navigate(0)
+        } catch (error) {
+            console.log(error);
 
+        }
     }
 
     const followUnfollowUser = () => {
@@ -82,11 +99,15 @@ const UserProfile = () => {
                         <small>Likes</small>
                     </li>
                 </ul>
-                <div className="profile__actions">
+                <div className="profile__actions-wrapper">
                     {user?._id === loggedInUserId ? <button className='btn' onClick={openEditProfileModal} >
                         Edit Profile
                     </button> : <button onClick={followUnfollowUser} className='btn dark'>{followsUser ? "Unfollow" : "Follow"}</button>}
+                    {user?._id !== loggedInUserId && <Link to={`/messages/${user?._id}`} className='btn default'>Message</Link>}
                 </div>
+                <article className="profile__bio">
+                    <p>{user?.bio}</p>
+                </article>
             </div>
         </section>
     )
