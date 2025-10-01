@@ -1,19 +1,33 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ProfileImage from './ProfileImage'
 import { useSelector } from 'react-redux'
 import { useState } from 'react'
 import { SlPicture } from 'react-icons/sl'
+import { getUserById } from '../services'
 
 const CreatePost = ({ onCreatePost, error }) => {
 
     const [body, setBody] = useState("")
 
     const [image, setImage] = useState("")
-    const profilePhoto = useSelector(state => state?.user?.currentUser?.profilePhoto)
+    const [user, setUser] = useState({})
+    const userId = useSelector(state => state?.user?.currentUser?.id)
+
 
     const setText = (e) => {
         console.log(e.target.value);
         setBody(e.target.value)
+    }
+
+    const getProfilePhoto = async () => {
+        try {
+            const res = await getUserById(userId)
+            setUser(res?.data)
+
+        } catch (error) {
+            console.log(error);
+
+        }
     }
 
     const CreatePost = (e) => {
@@ -30,12 +44,15 @@ const CreatePost = ({ onCreatePost, error }) => {
         setImage("")
     }
 
+    useEffect(() => {
+        getProfilePhoto()
+    }, [])
 
     return (
         <form className="createPost" encType="multipart/form-data" onSubmit={CreatePost}>
             {error && <p className='createPost__error-message'>{error}</p>}
             <div className="createPost__top">
-                <ProfileImage image={profilePhoto} />
+                <ProfileImage image={user?.profilePhoto} />
                 <textarea value={body} onChange={setText}
                     placeholder="What's on your mind?"></textarea>
             </div>

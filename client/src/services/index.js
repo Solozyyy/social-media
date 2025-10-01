@@ -132,3 +132,13 @@ export async function changeAvatarService(formData) {
         throw error;
     }
 }
+
+export async function followUnfollowUserService(userId) {
+    try {
+        const { data } = await axiosInstance.get(`/api/users/${userId}/follow-unfollow`)
+        return data
+    } catch (error) {
+        console.error("followUnfollowUserService error:", error.response?.data || error.message);
+        throw error;
+    }
+}

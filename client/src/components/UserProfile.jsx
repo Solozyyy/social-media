@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { changeAvatarService, getUserById } from '../services'
+import { changeAvatarService, getUserById, followUnfollowUserService } from '../services'
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { LuUpload } from 'react-icons/lu'
@@ -9,6 +9,7 @@ import { FaCheck } from 'react-icons/fa'
 import { useDispatch } from 'react-redux'
 import { userActions } from '../store/user-slice'
 import { useNavigate } from 'react-router-dom'
+import { uiSliceActions } from '../store/ui-slice'
 
 const UserProfile = () => {
 
@@ -52,17 +53,23 @@ const UserProfile = () => {
         }
     }
 
-    const followUnfollowUser = () => {
-
+    const openEditProfileModal = () => {
+        dispatch(uiSliceActions.openEditProfileModalOpen())
     }
 
-    const openEditProfileModal = () => {
+    const followUnfollowUser = async () => {
+        try {
+            const res = await followUnfollowUserService(userId)
+            setFollowsUser(res?.data?.folllowers?.includes(loggedInUserId))
+        } catch (error) {
+            console.log(error);
 
+        }
     }
 
     useEffect(() => {
         getUser()
-    }, [userId])
+    }, [userId, followsUser])
 
     console.log(user);
 
