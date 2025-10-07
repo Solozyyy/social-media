@@ -151,4 +151,14 @@ export async function getUserPostsService(userId) {
         console.error("getUserPostsService error:", error.response?.data || error.message);
         throw error;
     }
-} 
+}
+
+export async function deletePostService(postId) {
+    try {
+        const { data } = await axiosInstance.delete(`/api/posts/delete/${postId}`)
+        return data
+    } catch (error) {
+        console.error("deletePostService error:", error.response?.data || error.message);
+        throw error;
+    }
+}

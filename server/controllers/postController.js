@@ -83,7 +83,7 @@ const deletePost = async (req, res, next) => {
         const deletedPost = await PostModel.findByIdAndDelete(postId)
         await UserModel.findByIdAndUpdate(currentPost?.creator, { $pull: { posts: currentPost?._id } })
 
-        res.json(deletedPost)
+        res.json({ data: deletedPost })
     } catch (error) {
         return next(new HttpError(error || "Error occured"))
     }

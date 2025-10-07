@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import UserProfile from '../components/UserProfile'
 import HeaderInfo from '../components/HeaderInfo'
-import { getUserById, getUserPostsService } from '../services'
+import { deletePostService, getUserById, getUserPostsService } from '../services'
 import { useParams } from 'react-router-dom'
 import Feed from '../components/Feed'
 
@@ -30,8 +30,14 @@ const Profile = () => {
         }
     }
 
-    const deletePost = async () => {
+    const deletePost = async (postId) => {
+        try {
+            const res = deletePostService(postId)
+            setPosts(posts?.filter(p => p._id != postId))
+        } catch (error) {
+            console.log(error);
 
+        }
     }
 
     useEffect(() => {
@@ -45,8 +51,8 @@ const Profile = () => {
             <HeaderInfo text={user?.fullName + ` posts`} />
             <section className="profile__posts">
                 {
-                    posts?.length < 1 ? <p className='center'>Np posts by this user</p> :
-                        posts?.map(post => <Feed key={post._id} post={post} onDeletePosts=
+                    posts?.length < 1 ? <p className='center'>No posts by this user</p> :
+                        posts?.map(post => <Feed key={post._id} post={post} onDeletePost=
                             {deletePost} />
                         )
                 }
