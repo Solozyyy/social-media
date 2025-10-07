@@ -141,7 +141,7 @@ const getUserPost = async (req, res, next) => {
     try {
         const userId = req.params.id
         const posts = await UserModel.findById(userId).populate({ path: "posts", options: { sort: { createdAt: -1 } } })
-        res.json(posts)
+        res.json({ data: posts })
     } catch (error) {
         return next(new HttpError("Error occured"))
     }

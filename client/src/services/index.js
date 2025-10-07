@@ -142,3 +142,13 @@ export async function followUnfollowUserService(userId) {
         throw error;
     }
 }
+
+export async function getUserPostsService(userId) {
+    try {
+        const { data } = await axiosInstance.get(`/api/users/${userId}/posts`)
+        return data
+    } catch (error) {
+        console.error("getUserPostsService error:", error.response?.data || error.message);
+        throw error;
+    }
+} 
