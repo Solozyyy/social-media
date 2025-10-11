@@ -22,20 +22,18 @@ const uiSlice = createSlice({
         changeTheme: (state, action) => {
             state.theme = action.payload
         },
-        openEditProfileModalOpen: state => {
-            editProfileModalOpen = true
+        openEditProfileModal: state => {
+            state.editProfileModalOpen = true
         },
-        closeEditProfileModalOpen: state => {
-            editProfileModalOpen = false
+        closeEditProfileModal: state => {
+            state.editProfileModalOpen = false
         },
-        openEditPostModalOpen: state => {
-            editPostModalOpen = true
-        },
-        closeEditPostModalOpen: state => {
-            editPostModalOpen = false
-        },
-        changeEditPostId: (state, action) => {
+        openEditPostModal: (state, action) => {
+            state.editPostModalOpen = true
             state.editPostId = action.payload
+        },
+        closeEditPostModal: state => {
+            state.editPostModalOpen = false
         }
     }
 })

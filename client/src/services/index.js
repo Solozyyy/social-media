@@ -162,3 +162,13 @@ export async function deletePostService(postId) {
         throw error;
     }
 }
+
+export async function updatePostService(postId, body) {
+    try {
+        const { data } = await axiosInstance.patch(`/api/posts/update/${postId}`, body)
+        return data
+    } catch (error) {
+        console.error("updatePostService error:", error.response?.data || error.message);
+        throw error;
+    }
+}

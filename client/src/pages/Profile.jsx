@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import UserProfile from '../components/UserProfile'
 import HeaderInfo from '../components/HeaderInfo'
-import { deletePostService, getUserById, getUserPostsService } from '../services'
+import { deletePostService, getUserById, getUserPostsService, updatePostService } from '../services'
 import { useParams } from 'react-router-dom'
 import Feed from '../components/Feed'
+import { useSelector } from 'react-redux'
+import EditPostModal from '../components/EditPostModal'
+
 
 const Profile = () => {
 
@@ -11,6 +14,7 @@ const Profile = () => {
     const { id: userId } = useParams()
     const [posts, setPosts] = useState([])
     const [isLoading, setIsLoading] = useState(false)
+    const editPostModalOpen = useSelector(state => state?.ui?.editPostModalOpen)
 
     const getUser = async () => {
         const res = await getUserById(userId)
@@ -32,8 +36,26 @@ const Profile = () => {
 
     const deletePost = async (postId) => {
         try {
-            const res = deletePostService(postId)
+            const res = await deletePostService(postId)
             setPosts(posts?.filter(p => p._id != postId))
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
+
+    const updatePost = async (postId, data) => {
+        try {
+            const res = await updatePostService(postId, data)
+            if (res?.status === 200) {
+                const updatedPost = res?.data
+                setPosts(posts?.map(p => {
+                    if (updatedPost?._id.toString() == p?._id.toString()) {
+                        p.body = updatedPost.body
+                    }
+                    return p
+                }))
+            }
         } catch (error) {
             console.log(error);
 
@@ -57,6 +79,7 @@ const Profile = () => {
                         )
                 }
             </section>
+            {editPostModalOpen && <EditPostModal onUpdatePost={updatePost} />}
         </section>
     )
 }

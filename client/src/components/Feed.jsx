@@ -32,7 +32,7 @@ const Feed = ({ post, onDeletePost }) => {
     }
 
     const showEditPostModal = () => {
-        dispatch(uiSliceActions?.openEditPostModalOpen(post?._id))
+        dispatch(uiSliceActions?.openEditPostModal(post?._id))
         setShowFeedHeaderMenu(false)
     }
 
@@ -45,7 +45,7 @@ const Feed = ({ post, onDeletePost }) => {
         getPostCreator()
     }, [post])
 
-    console.log("id", userId);
+    //console.log("id", userId);
 
 
     return (
@@ -54,7 +54,6 @@ const Feed = ({ post, onDeletePost }) => {
                 <Link to={`/users/${post?.creator}`} className="feed__header-profile" >
                     <ProfileImage image={creator?.profilePhoto} />
                     <div className="feed__header-details">
-                        <h4>{post?.creator}</h4>
                         <h4>{creator?.fullName}</h4>
                         <small><TimeAgo date={post?.createdAt} /></small>
                     </div>
