@@ -94,7 +94,7 @@ const getUser = async (req, res, next) => {
 const getUsers = async (req, res, next) => {
     try {
         const userList = await UserModel.find()
-        res.json(userList).status(201)
+        res.json({ data: userList }).status(201)
     } catch (error) {
         return next(new HttpError(error))
     }

@@ -1,8 +1,12 @@
 import React from 'react'
+import FriendRequests from './FriendRequests'
 
 const Widgets = () => {
     return (
-        <div>Widgets</div>
+        <section className="widgets">
+
+            <FriendRequests />
+        </section>
     )
 }
 

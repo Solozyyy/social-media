@@ -182,3 +182,13 @@ export async function updateUserService(userData) {
         throw error;
     }
 }
+
+export async function getUsersService() {
+    try {
+        const { data } = await axiosInstance.get("/api/users/")
+        return data
+    } catch (error) {
+        logger.error("getUsersService error:", error.response?.data || error.message);
+        throw error;
+    }
+}
