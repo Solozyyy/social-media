@@ -54,7 +54,7 @@ const UserProfile = () => {
     }
 
     const openEditProfileModal = () => {
-        dispatch(uiSliceActions.openEditProfileModalOpen())
+        dispatch(uiSliceActions.openEditProfileModal())
     }
 
     const followUnfollowUser = async () => {

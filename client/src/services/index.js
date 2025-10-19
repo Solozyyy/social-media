@@ -172,3 +172,13 @@ export async function updatePostService(postId, body) {
         throw error;
     }
 }
+
+export async function updateUserService(userData) {
+    try {
+        const { data } = await axiosInstance.patch(`/api/users/update`, userData)
+        return data
+    } catch (error) {
+        console.error("updateUserService error:", error.response?.data || error.message);
+        throw error;
+    }
+}

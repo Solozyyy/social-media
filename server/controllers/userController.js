@@ -106,7 +106,7 @@ const updateUser = async (req, res, next) => {
 
         const editCurrentUser = await UserModel.findByIdAndUpdate(req.user.id, { fullName, bio }, { new: true })
 
-        res.json(editCurrentUser).status(201)
+        res.json({ data: editCurrentUser }).status(201)
 
     } catch (error) {
         return next(new HttpError(error))

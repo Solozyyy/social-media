@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom'
 import Feed from '../components/Feed'
 import { useSelector } from 'react-redux'
 import EditPostModal from '../components/EditPostModal'
-
+import EditProfileModal from '../components/EditProfileModal'
 
 const Profile = () => {
 
@@ -15,6 +15,7 @@ const Profile = () => {
     const [posts, setPosts] = useState([])
     const [isLoading, setIsLoading] = useState(false)
     const editPostModalOpen = useSelector(state => state?.ui?.editPostModalOpen)
+    const editProfileModalOpen = useSelector(state => state?.ui?.editProfileModalOpen)
 
     const getUser = async () => {
         const res = await getUserById(userId)
@@ -80,6 +81,7 @@ const Profile = () => {
                 }
             </section>
             {editPostModalOpen && <EditPostModal onUpdatePost={updatePost} />}
+            {editProfileModalOpen && <EditProfileModal />}
         </section>
     )
 }

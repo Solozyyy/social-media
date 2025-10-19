@@ -1170,7 +1170,7 @@ EDIT PROFILE
 
 .editProfile__container {
   background: var(--color-gray-0);
-  padding: 3rem;
+  padding: 5rem;
   border-radius: var(--radius-5);
   width: 45rem;
 }
@@ -1501,7 +1501,7 @@ EDIT POST
 
 .editPost__container {
   background: var(--color-gray-0);
-  padding: 2rem;
+  padding: 4rem;
   border-radius: var(--radius-3);
   display: flex;
   flex-direction: column;
