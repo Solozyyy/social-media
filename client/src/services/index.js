@@ -192,3 +192,33 @@ export async function getUsersService() {
         throw error;
     }
 }
+
+export async function getConversationsService() {
+    try {
+        const { data } = await axiosInstance.get("/api/messages/conversations")
+        return data
+    } catch (error) {
+        logger.error("getConversations error:", error.response?.data || error.message);
+        throw error;
+    }
+}
+
+export async function getMessagesService(receiverId) {
+    try {
+        const { data } = await axiosInstance.get(`/api/messages/${receiverId}`)
+        return data
+    } catch (error) {
+        logger.error("getMessagesService error:", error.response?.data || error.message);
+        throw error;
+    }
+}
+
+export async function sendMessageService(receiverId, messageBody) {
+    try {
+        const { data } = await axiosInstance.post(`/api/messages/${receiverId}`, { messageBody })
+        return data
+    } catch (error) {
+        console.error("sendMessageService error:", error.response?.data || error.message);
+        throw error;
+    }
+}

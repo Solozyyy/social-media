@@ -22,7 +22,7 @@ const createMessage = async (req, res, next) => {
         if (receiverSocketId) {
             io.to(receiverSocketId).emit("newMessage", newMessage)
         }
-        res.json(newMessage)
+        res.json({ data: newMessage })
     } catch (error) {
         return next(new HttpError(error || "error occured"))
     }
@@ -38,7 +38,7 @@ const getMessages = async (req, res, next) => {
             return next(new HttpError("No messages with this user"))
         }
         const messages = await MessageModel.find({ conversationId: conversation._id }).sort({ createdAt: 1 })
-        res.json(messages)
+        res.json({ data: messages })
 
     } catch (error) {
         return next(new HttpError(error || "error occured"))
@@ -62,7 +62,7 @@ const getConversations = async (req, res, next) => {
         if (!conversations) {
             return next(new HttpError("User has no conversations"))
         }
-        res.json(conversations)
+        res.json({ data: conversations })
 
     } catch (error) {
         return next(new HttpError(error || "error occured"))
