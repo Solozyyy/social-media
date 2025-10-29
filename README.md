@@ -88,14 +88,14 @@ Mở trình duyệt tại: 👉 http://localhost:5173
 
 ### Công nghệ sử dụng
 
-🎨 Frontend
+## Frontend
 ⚛️ React 19 + Vite
 🧰 Redux Toolkit
 🌐 React Router DOM
 💬 Socket.IO Client
 🕒 React Timeago, jwt-decode, React Icons
 
-⚙️ Backend
+## Backend
 🚀 Express 5
 💾 MongoDB + Mongoose
 🔐 JWT Authentication
