@@ -8,28 +8,53 @@ Cho phép người dùng **đăng ký, đăng nhập, đăng bài viết, bình 
 ## 🏗️ Cấu trúc dự án
 ```
 social-media/
+🖥️ Frontend – React (client/)
+client/
 │
-├── client/ # Frontend React + Vite
-│ ├── public/
-│ ├── src/
-│ │ ├── components/
-│ │ ├── pages/
-│ │ ├── store/
-│ │ └── main.jsx
-│ ├── package.json
-│ └── vite.config.js
+├── public/
 │
-├── server/ # Backend Express + MongoDB
-│ ├── db/
-│ ├── middleware/
-│ ├── models/
-│ ├── routes/
-│ ├── socket/
-│ │ └── socket.js
-│ ├── index.js
-│ ├── package.json
-│ └── .env
+├── src/
+│ ├── assets/ # Hình ảnh, icon, tài nguyên tĩnh
+│ ├── axios/ # Cấu hình axios cho API calls
+│ ├── components/ # Thành phần UI tái sử dụng (Navbar, PostCard, ...)
+│ ├── helpers/ # Hàm tiện ích (format thời gian, xử lý token, ...)
+│ ├── pages/ # Các trang giao diện (Home, Login, Profile, Chat, ...)
+│ ├── services/ # Dịch vụ API (userService, postService, ...)
+│ ├── socket/ # Cấu hình client Socket.IO (kết nối realtime)
+│ ├── store/ # Redux store + slice (userSlice, chatSlice, ...)
+│ │
+│ ├── App.jsx # Component chính của ứng dụng
+│ ├── RootLayout.jsx # Layout gốc bao bọc các route
+│ ├── index.css # CSS tổng
+│ ├── main.jsx # Điểm khởi chạy React DOM
 │
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package.json
+├── package-lock.json
+├── vite.config.js
+└── README.md
+
+
+⚙️ Backend – Express (server/)
+
+server/
+│
+├── controllers/ # Xử lý logic cho các route (userController, postController, ...)
+├── db/ # Kết nối cơ sở dữ liệu MongoDB
+├── middleware/ # Middleware (xử lý lỗi, xác thực JWT, upload, ...)
+├── models/ # Định nghĩa schema MongoDB (User, Post, Comment, Message, ...)
+├── routes/ # Định nghĩa endpoint (userRoutes, postRoutes, commentRoutes, ...)
+├── socket/ # Quản lý Socket.IO server (socket.js)
+├── uploads/ # Thư mục lưu tạm file upload (nếu dùng local)
+├── utils/ # Tiện ích dùng chung (hàm xử lý, constant, ...)
+│
+├── .env # Biến môi trường (PORT, DB_URL, JWT_SECRET, ...)
+├── .gitignore
+├── index.js # Điểm khởi động server chính
+├── package.json
+├── package-lock.json
 └── README.md
 ```
 
