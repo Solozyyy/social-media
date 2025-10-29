@@ -86,23 +86,18 @@ npm run dev
 ```
 Mở trình duyệt tại: 👉 http://localhost:5173
 
-🧩 Công nghệ sử dụng
+### Công nghệ sử dụng
+
 🎨 Frontend
 ⚛️ React 19 + Vite
-
 🧰 Redux Toolkit
-
 🌐 React Router DOM
-
 💬 Socket.IO Client
-
 🕒 React Timeago, jwt-decode, React Icons
 
 ⚙️ Backend
 🚀 Express 5
-
 💾 MongoDB + Mongoose
-
 🔐 JWT Authentication
 
 ☁️ Cloudinary API
